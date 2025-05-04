@@ -1,0 +1,26 @@
+default:
+  target: warehouse
+  outputs:
+    warehouse:
+      type: trino
+      method: ldap
+      http_scheme: https
+      host: localhost
+      port: 8082
+      user: test
+      password: test
+      catalog: warehouse
+      schema: data
+
+airflow:
+  target: warehouse
+  outputs:
+    warehouse:
+      type: trino
+      method: ldap
+      host: trino
+      port: 8082
+      user: test
+      password: test
+      catalog: warehouse
+      schema: data

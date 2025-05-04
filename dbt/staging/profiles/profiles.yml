@@ -1,0 +1,26 @@
+default:
+  target: staging
+  outputs:
+    staging:
+      type: trino
+      method: ldap
+      http_scheme: https
+      host: localhost
+      port: 8082
+      user: test
+      password: test
+      catalog: staging
+      schema: data
+
+airflow:
+  target: staging
+  outputs:
+    staging:
+      type: trino
+      method: ldap
+      host: trino
+      port: 8082
+      user: test
+      password: test
+      catalog: staging
+      schema: data

@@ -1,0 +1,73 @@
+services:
+  trino:
+    image: "trinodb/trino"
+    container_name: trino
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./trino/config/config.properties:/etc/trino/config.properties
+      - ./trino/auth/password-authenticator.properties:/etc/trino/password-authenticator.properties
+      - ./trino/auth/:/etc/trino/auth/
+      - ./trino/catalog/:/etc/trino/catalog/
+    depends_on:
+      - landing
+      - staging
+      - warehouse
+    networks:
+      iceberg_network:
+  landing:
+    image: tabulario/iceberg-rest
+    container_name: landing
+    ports:
+      - "8181:8181"
+    environment:
+      AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: eu-north-1
+      CATALOG_WAREHOUSE: s3://estonian-opendata/landing
+      CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+      CATALOG_URI: jdbc:sqlite:file:/home/iceberg/iceberg.db
+      #CATALOG_S3_ENDPOINT: http://minio:9000
+    networks:
+      iceberg_network:
+    volumes:
+      - ./landing/:/home/iceberg
+  staging:
+    image: tabulario/iceberg-rest
+    container_name: staging
+    ports:
+      - "8182:8181"
+    environment:
+      AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: eu-north-1
+      CATALOG_WAREHOUSE: s3://estonian-opendata/staging
+      CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+      CATALOG_URI: jdbc:sqlite:file:/home/iceberg/iceberg.db
+      #CATALOG_S3_ENDPOINT: http://minio:9000
+    networks:
+      iceberg_network:
+    volumes:
+      - ./staging/:/home/iceberg
+  warehouse:
+    image: tabulario/iceberg-rest
+    container_name: warehouse
+    ports:
+      - "8183:8181"
+    environment:
+      AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: eu-north-1
+      CATALOG_WAREHOUSE: s3://estonian-opendata/warehouse
+      CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+      CATALOG_URI: jdbc:sqlite:file:/home/iceberg/iceberg.db
+      #CATALOG_S3_ENDPOINT: http://minio:9000
+    networks:
+      iceberg_network:
+    volumes:
+      - ./warehouse/:/home/iceberg
+
+networks:
+  iceberg_network:
+    driver: bridge
+    external: true

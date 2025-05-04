@@ -1,0 +1,20 @@
+services:
+ postgres:
+   networks:
+     - iceberg_network
+ webserver:
+   networks:
+     - iceberg_network
+ scheduler:
+   networks:
+     - iceberg_network
+   volumes:
+     - './../dbt:/usr/local/airflow/dbt'
+     - './dags:/usr/local/airflow/dags'
+ triggerer:
+   networks:
+     - iceberg_network
+
+networks:
+  iceberg_network:
+    external: true

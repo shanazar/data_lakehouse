@@ -1,0 +1,23 @@
+landing:
+  uri: http://landing:8181/
+  py-io-impl: pyiceberg.io.pyarrow.PyArrowFileIO
+  s3:
+    region: #REGION
+    access-key-id: #ACCESS_KEY_ID
+    secret-access-key: #SECRET_ACCESS_KEY
+
+staging:
+  uri: http://staging:8181/
+  py-io-impl: pyiceberg.io.pyarrow.PyArrowFileIO
+  s3:
+    region: #REGION
+    access-key-id: #ACCESS_KEY_ID
+    secret-access-key: #SECRET_ACCESS_KEY
+
+warehouse:
+  uri: http://warehouse:8181/
+  py-io-impl: pyiceberg.io.pyarrow.PyArrowFileIO
+  s3:
+    region: #REGION
+    access-key-id: #ACCESS_KEY_ID
+    secret-access-key: #SECRET_ACCESS_KEY
