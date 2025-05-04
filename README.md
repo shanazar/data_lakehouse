@@ -25,7 +25,7 @@ The project uses the following technologies:
 3. Replace S3 variables in the following files:
    - `docker-compose.yml` in the `data_lakehouse` directory.
    - `*.properties` files in the `data_lakehouse/trino/catalog` directory.
-   - `include/configuration.yaml` in the `airflow/include` directory.
+   - `configuration.yaml` in the `airflow/include` directory.
 4. Run Iceberg REST + Trino by navigating to the `data_lakehouse` directory and running:
    ```bash
    docker-compose up -d
